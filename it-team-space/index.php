@@ -15,6 +15,12 @@ I18n::initFromSession();
 $current_page = 'dashboard';
 $path_prefix = '../';
 
+// This module runs without the shared top header, so guard auth here.
+if (!isset($_SESSION['analyst_id'])) {
+    header('Location: ' . BASE_URL . 'login.php');
+    exit;
+}
+
 $analyst_name = $_SESSION['analyst_name'] ?? 'Analyst';
 // Initials from the first two words of the name.
 $__parts = preg_split('/\s+/', trim($analyst_name));
@@ -33,7 +39,7 @@ $analyst_initials = strtoupper(substr($__parts[0] ?? 'A', 0, 1) . (isset($__part
     <style>
         .its-shell {
             display: flex;
-            height: calc(100vh - 48px);
+            height: 100vh;
             width: 100%;
             overflow: hidden;
             font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
@@ -61,8 +67,6 @@ $analyst_initials = strtoupper(substr($__parts[0] ?? 'A', 0, 1) . (isset($__part
     <link rel="stylesheet" href="../assets/css/zabbix-theme-generated.css">
 </head>
 <body>
-    <?php include 'includes/header.php'; ?>
-
     <div class="its-shell">
         <!-- SIDEBAR -->
         <aside class="its-aside">
@@ -312,8 +316,6 @@ $analyst_initials = strtoupper(substr($__parts[0] ?? 'A', 0, 1) . (isset($__part
             const showDocs = state.tab === 'all' || state.tab === 'docs';
             const showMeet = state.tab === 'all' || state.tab === 'meet';
 
-            const memberAvatars = team.map((m, i) => `<div style="${av(m.color,30)};border:2px solid #0E1116;margin-left:${i?-8:0}px;font-size:11px">${esc(m.initials)}</div>`).join('');
-
             const tabsHtml = tabDefs.map(t => { const active = state.tab === t.key; return `<div class="its-click" data-tab="${t.key}" style="padding:9px 13px;font-size:13.5px;font-weight:${active?700:500};color:${active?ACCENT:'#7E848D'};border-bottom:2px solid ${active?ACCENT:'transparent'};margin-bottom:-1px;cursor:pointer">${esc(t.label)}</div>`; }).join('');
 
             let annStatus = '';
@@ -349,15 +351,7 @@ $analyst_initials = strtoupper(substr($__parts[0] ?? 'A', 0, 1) . (isset($__part
                 </div>
                 <div style="max-width:980px;margin:0 auto;padding:0 56px 60px 56px">
                     <div style="font-size:60px;line-height:1;margin-top:-40px;position:relative;filter:drop-shadow(0 6px 16px rgba(0,0,0,.5))">🖥️</div>
-                    <h1 style="font-size:34px;font-weight:800;letter-spacing:-.02em;margin:14px 0 6px 0;color:#F4F6F8">IT Team Space</h1>
-                    <p style="font-size:15px;color:#9BA1A9;margin:0;max-width:560px;line-height:1.5">The internal hub for the technology team — tools, status, projects, runbooks and notes, all in one place.</p>
-                    <div style="display:flex;align-items:center;gap:14px;margin-top:16px;flex-wrap:wrap">
-                        <div style="display:flex">${memberAvatars}</div>
-                        <span style="font-size:12.5px;color:#7E848D">6 team members</span>
-                        <span style="font-size:12.5px;color:#4A4F57">·</span>
-                        <span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#7E848D">Edited 2h ago</span>
-                    </div>
-                    <div style="margin-top:8px;font-size:18px;font-weight:700;padding-top:26px;color:#F2F4F6">${esc(greetingText())}</div>
+                    <div style="margin-top:14px;font-size:22px;font-weight:800;letter-spacing:-.01em;color:#F2F4F6">${esc(greetingText())}</div>
 
                     <div style="display:flex;align-items:center;justify-content:space-between;margin-top:22px;margin-bottom:12px">
                         <div style="font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6E747D;font-family:'IBM Plex Mono',monospace">Quick links</div>
