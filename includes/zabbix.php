@@ -99,6 +99,16 @@ class ZabbixClient
         ]);
 
         $verifySsl = $this->verifySsl;
+
+        // Zabbix 6.4+/7.x reject an Authorization header on the few methods that
+        // are callable unauthenticated (notably apiinfo.version) — sending one
+        // returns "Invalid params … must be called without authorization header".
+        $unauthenticated = ['apiinfo.version'];
+        $headers = ['Content-Type: application/json-rpc'];
+        if (!in_array($method, $unauthenticated, true)) {
+            $headers[] = 'Authorization: Bearer ' . $this->token;
+        }
+
         $ch = curl_init($this->url . '/api_jsonrpc.php');
         curl_setopt_array($ch, [
             CURLOPT_POST           => true,
@@ -107,10 +117,7 @@ class ZabbixClient
             CURLOPT_TIMEOUT        => 20,
             CURLOPT_SSL_VERIFYPEER => $verifySsl,
             CURLOPT_SSL_VERIFYHOST => $verifySsl ? 2 : 0,
-            CURLOPT_HTTPHEADER     => [
-                'Content-Type: application/json-rpc',
-                'Authorization: Bearer ' . $this->token,
-            ],
+            CURLOPT_HTTPHEADER     => $headers,
         ]);
 
         $response = curl_exec($ch);
