@@ -15,12 +15,6 @@ I18n::initFromSession();
 $current_page = 'dashboard';
 $path_prefix = '../';
 
-// This module runs without the shared top header, so guard auth here.
-if (!isset($_SESSION['analyst_id'])) {
-    header('Location: ' . BASE_URL . 'login.php');
-    exit;
-}
-
 $analyst_name = $_SESSION['analyst_name'] ?? 'Analyst';
 // Initials from the first two words of the name.
 $__parts = preg_split('/\s+/', trim($analyst_name));
@@ -39,7 +33,7 @@ $analyst_initials = strtoupper(substr($__parts[0] ?? 'A', 0, 1) . (isset($__part
     <style>
         .its-shell {
             display: flex;
-            height: 100vh;
+            height: calc(100vh - 48px);
             width: 100%;
             overflow: hidden;
             font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
@@ -67,6 +61,8 @@ $analyst_initials = strtoupper(substr($__parts[0] ?? 'A', 0, 1) . (isset($__part
     <link rel="stylesheet" href="../assets/css/zabbix-theme-generated.css">
 </head>
 <body>
+    <?php include 'includes/header.php'; ?>
+
     <div class="its-shell">
         <!-- SIDEBAR -->
         <aside class="its-aside">
@@ -345,12 +341,8 @@ $analyst_initials = strtoupper(substr($__parts[0] ?? 'A', 0, 1) . (isset($__part
             if (docsCol || meetCol) docsMeet = `<div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:30px">${docsCol}${meetCol}</div>`;
 
             return `<div>
-                <div style="height:148px;background:linear-gradient(120deg,#1B1E24 0%,#15171C 55%,#241317 100%);position:relative;overflow:hidden;border-bottom:1px solid #24272E">
-                    <div style="position:absolute;inset:0;background-image:radial-gradient(circle at 18% 130%,rgba(228,89,89,.22),transparent 40%),radial-gradient(circle at 82% -30%,rgba(116,153,255,.16),transparent 45%)"></div>
-                    <div style="position:absolute;right:30px;top:24px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(232,234,237,.55);letter-spacing:.05em">SY 2025–26 · Internal</div>
-                </div>
-                <div style="max-width:980px;margin:0 auto;padding:0 56px 60px 56px">
-                    <div style="font-size:60px;line-height:1;margin-top:-40px;position:relative;filter:drop-shadow(0 6px 16px rgba(0,0,0,.5))">🖥️</div>
+                <div style="max-width:980px;margin:0 auto;padding:30px 56px 60px 56px">
+                    <div style="font-size:60px;line-height:1;position:relative;filter:drop-shadow(0 6px 16px rgba(0,0,0,.5))">🖥️</div>
                     <div style="margin-top:14px;font-size:22px;font-weight:800;letter-spacing:-.01em;color:#F2F4F6">${esc(greetingText())}</div>
 
                     <div style="display:flex;align-items:center;justify-content:space-between;margin-top:22px;margin-bottom:12px">
