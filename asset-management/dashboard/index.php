@@ -222,6 +222,7 @@ $translationNamespaces = ['common', 'asset-management'];
         }
     </style>
     <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme-generated.css">
 </head>
 <body>
     <?php require_once '../includes/header.php'; ?>

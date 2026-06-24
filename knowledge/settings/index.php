@@ -225,6 +225,7 @@ $translationNamespaces = ['common', 'knowledge'];
         }
     </style>
     <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme-generated.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

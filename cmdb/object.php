@@ -633,6 +633,7 @@ $translationNamespaces = ['common', 'cmdb'];
         .key-hint { font-family: 'Consolas', 'Monaco', monospace; font-size: 12px; color: #6b7280; }
     </style>
     <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
+    <link rel="stylesheet" href="../assets/css/zabbix-theme-generated.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>

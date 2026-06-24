@@ -23,6 +23,7 @@ $translationNamespaces = ['common', 'change-management'];
     <script src="<?php echo BASE_URL; ?>assets/js/i18n.js"></script>
     <script src="<?php echo BASE_URL; ?>assets/js/tinymce/tinymce.min.js"></script>
     <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
+    <link rel="stylesheet" href="../assets/css/zabbix-theme-generated.css">
 </head>
 <body data-analyst-id="<?php echo $_SESSION['analyst_id'] ?? ''; ?>">
     <?php include __DIR__ . '/includes/header.php'; ?>

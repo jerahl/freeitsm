@@ -140,6 +140,7 @@ if (isset($_SESSION['analyst_id'])) {
         .back-link:hover { color: #666; }
     </style>
     <link rel="stylesheet" href="assets/css/zabbix-theme.css">
+    <link rel="stylesheet" href="assets/css/zabbix-theme-generated.css">
 </head>
 <body>
     <div class="container">

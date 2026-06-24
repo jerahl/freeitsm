@@ -152,6 +152,7 @@ $allowed_modules = $_SESSION['allowed_modules'] ?? null;
         }
     </style>
     <link rel="stylesheet" href="assets/css/zabbix-theme.css">
+    <link rel="stylesheet" href="assets/css/zabbix-theme-generated.css">
 </head>
 <body>
     <div class="landing-header">

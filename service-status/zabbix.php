@@ -162,6 +162,7 @@ $refreshSeconds = defined('ZABBIX_REFRESH_SECONDS') ? (int) ZABBIX_REFRESH_SECON
         .zbx-empty-row td { text-align: center; color: #64748b; padding: 30px; }
     </style>
     <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
+    <link rel="stylesheet" href="../assets/css/zabbix-theme-generated.css">
 </head>
 <body>
     <?php require_once 'includes/header.php'; ?>

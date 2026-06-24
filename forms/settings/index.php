@@ -244,6 +244,7 @@ $translationNamespaces = ['common', 'forms'];
         .ai-form .test-status { font-size: 13px; margin-left: 8px; }
     </style>
     <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme-generated.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>
