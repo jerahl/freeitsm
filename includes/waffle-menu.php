@@ -45,6 +45,11 @@ $modules = [
         'path' => 'watchtower/',
         'icon' => '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>'
     ],
+    'it-team-space' => [
+        'name' => t('common.modules.it-team-space.name'),
+        'path' => 'it-team-space/',
+        'icon' => '<rect x="3" y="3" width="7" height="9" rx="1"></rect><rect x="14" y="3" width="7" height="5" rx="1"></rect><rect x="14" y="12" width="7" height="9" rx="1"></rect><rect x="3" y="16" width="7" height="5" rx="1"></rect>'
+    ],
     'tickets' => [
         'name' => t('common.modules.tickets.name'),
         'path' => 'tickets/',

@@ -188,6 +188,7 @@ $today = date('j F Y');
         }
     </style>
     <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme-generated.css">
 </head>
 <body>
     <div class="pv-toolbar">

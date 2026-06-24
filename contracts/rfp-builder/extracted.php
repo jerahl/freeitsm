@@ -193,6 +193,7 @@ $translationNamespaces = ['common', 'contracts'];
         .form-row .meta-row .meta-item span:first-child { color: #888; }
     </style>
     <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme-generated.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

@@ -184,6 +184,7 @@ $translationNamespaces = ['common', 'system-wiki'];
         .empty-section { padding: 16px 20px; color: #aaa; font-size: 13px; font-style: italic; }
     </style>
     <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
+    <link rel="stylesheet" href="../assets/css/zabbix-theme-generated.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>

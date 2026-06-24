@@ -75,6 +75,13 @@ function getSystemAreas() {
             'keywords' => 'system.landing.preferences_keywords',
         ],
         [
+            'icon'     => 'zabbix',
+            'url'      => 'zabbix/',
+            'title'    => 'system.landing.zabbix_title',
+            'desc'     => 'system.landing.zabbix_desc',
+            'keywords' => 'system.landing.zabbix_keywords',
+        ],
+        [
             'icon'     => 'demo_data',
             'url'      => 'demo-data/',
             'title'    => 'system.landing.demo_data_title',
@@ -125,6 +132,7 @@ function systemAreaIcon($key) {
         'debug_tools' => '<path d="M8 2v4"></path><path d="M16 2v4"></path><rect x="3" y="6" width="18" height="15" rx="2"></rect><path d="M3 13h18"></path><path d="M9 17l2 2 4-4"></path>',
         'companies'   => '<path d="M3 21h18"></path><path d="M9 8h1"></path><path d="M9 12h1"></path><path d="M9 16h1"></path><path d="M14 8h1"></path><path d="M14 12h1"></path><path d="M14 16h1"></path><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path>',
         'routing_test'=> '<rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>',
+        'zabbix'      => '<path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>',
     ];
     $inner = $icons[$key] ?? '<rect x="3" y="3" width="18" height="18" rx="2"></rect>';
     return '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">' . $inner . '</svg>';

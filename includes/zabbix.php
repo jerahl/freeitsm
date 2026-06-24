@@ -32,12 +32,29 @@ class ZabbixClient
     private $url;
     private $token;
     private $minSeverity;
+    private $verifySsl;
 
-    public function __construct($url = null, $token = null)
+    public function __construct($url = null, $token = null, $minSeverity = null, $verifySsl = null)
     {
         $this->url = rtrim($url ?? (defined('ZABBIX_API_URL') ? ZABBIX_API_URL : ''), '/');
         $this->token = $token ?? (defined('ZABBIX_API_TOKEN') ? ZABBIX_API_TOKEN : '');
-        $this->minSeverity = defined('ZABBIX_MIN_SEVERITY') ? (int) ZABBIX_MIN_SEVERITY : 0;
+        $this->minSeverity = $minSeverity !== null
+            ? (int) $minSeverity
+            : (defined('ZABBIX_MIN_SEVERITY') ? (int) ZABBIX_MIN_SEVERITY : 0);
+        $this->verifySsl = $verifySsl !== null
+            ? (bool) $verifySsl
+            : (defined('SSL_VERIFY_PEER') ? (bool) SSL_VERIFY_PEER : true);
+    }
+
+    /**
+     * Build a client from the DB-backed System > Zabbix settings (falls back to
+     * the ZABBIX_* constants for any unset value).
+     */
+    public static function fromSettings(PDO $conn): self
+    {
+        require_once __DIR__ . '/zabbix_settings.php';
+        $cfg = zabbixSettingsLoad($conn);
+        return new self($cfg['url'], $cfg['token'], $cfg['min_severity'], $cfg['verify_ssl']);
     }
 
     /** Whether the integration has the minimum config needed to talk to Zabbix. */
@@ -81,7 +98,17 @@ class ZabbixClient
             'id'      => 1,
         ]);
 
-        $verifySsl = defined('SSL_VERIFY_PEER') ? SSL_VERIFY_PEER : true;
+        $verifySsl = $this->verifySsl;
+
+        // Zabbix 6.4+/7.x reject an Authorization header on the few methods that
+        // are callable unauthenticated (notably apiinfo.version) — sending one
+        // returns "Invalid params … must be called without authorization header".
+        $unauthenticated = ['apiinfo.version'];
+        $headers = ['Content-Type: application/json-rpc'];
+        if (!in_array($method, $unauthenticated, true)) {
+            $headers[] = 'Authorization: Bearer ' . $this->token;
+        }
+
         $ch = curl_init($this->url . '/api_jsonrpc.php');
         curl_setopt_array($ch, [
             CURLOPT_POST           => true,
@@ -90,10 +117,7 @@ class ZabbixClient
             CURLOPT_TIMEOUT        => 20,
             CURLOPT_SSL_VERIFYPEER => $verifySsl,
             CURLOPT_SSL_VERIFYHOST => $verifySsl ? 2 : 0,
-            CURLOPT_HTTPHEADER     => [
-                'Content-Type: application/json-rpc',
-                'Authorization: Bearer ' . $this->token,
-            ],
+            CURLOPT_HTTPHEADER     => $headers,
         ]);
 
         $response = curl_exec($ch);
@@ -233,5 +257,109 @@ class ZabbixClient
             'hostsDown'    => $hostsDown,
             'severities'   => self::SEVERITIES,
         ];
+    }
+
+    /**
+     * Build a service-status board from Zabbix host groups. Each monitored host
+     * group becomes one row whose status is derived from the worst active
+     * problem affecting hosts in that group (and host maintenance windows):
+     *
+     *   severity >= 4 (High/Disaster) → down
+     *   severity 2–3 (Warning/Average) → degraded
+     *   any host in maintenance        → maintenance
+     *   otherwise                      → operational
+     *
+     * Rows are sorted worst-first. Requires Zabbix 6.2+ (selectHostGroups).
+     *
+     * @return array<int,array{name:string,status:string,severity:int}>
+     */
+    public function getServiceStatus($limit = 40)
+    {
+        $groups = $this->call('hostgroup.get', [
+            'output'               => ['groupid', 'name'],
+            'with_monitored_hosts' => true,
+            'real_hosts'           => true,
+            'sortfield'            => 'name',
+        ]);
+        $groups = is_array($groups) ? $groups : [];
+
+        // host → groups + maintenance flag
+        $hosts = $this->call('host.get', [
+            'output'           => ['hostid', 'maintenance_status'],
+            'selectHostGroups' => ['groupid'],
+            'monitored_hosts'  => true,
+        ]);
+        $hosts = is_array($hosts) ? $hosts : [];
+        $hostGroups = [];
+        $hostMaint  = [];
+        foreach ($hosts as $h) {
+            $hid = $h['hostid'] ?? null;
+            if ($hid === null) continue;
+            $grps = $h['hostgroups'] ?? $h['groups'] ?? [];
+            $hostGroups[$hid] = array_map(function ($g) { return $g['groupid']; }, $grps);
+            $hostMaint[$hid]  = (int) ($h['maintenance_status'] ?? 0) === 1;
+        }
+
+        // active problems → trigger → hosts
+        $problems = $this->call('problem.get', [
+            'output' => ['eventid', 'objectid', 'severity'],
+            'recent' => false,
+        ]);
+        $problems = is_array($problems) ? $problems : [];
+        $triggerIds = array_values(array_unique(array_filter(array_map(
+            function ($p) { return $p['objectid'] ?? null; }, $problems))));
+        $triggerHosts = [];
+        if (!empty($triggerIds)) {
+            $triggers = $this->call('trigger.get', [
+                'output'      => ['triggerid'],
+                'selectHosts' => ['hostid'],
+                'triggerids'  => $triggerIds,
+            ]);
+            foreach (is_array($triggers) ? $triggers : [] as $tr) {
+                $triggerHosts[$tr['triggerid']] = array_map(function ($h) { return $h['hostid']; }, $tr['hosts'] ?? []);
+            }
+        }
+
+        // worst severity per group
+        $groupSev = [];
+        foreach ($problems as $p) {
+            $sev = (int) ($p['severity'] ?? 0);
+            $tid = $p['objectid'] ?? null;
+            foreach ($triggerHosts[$tid] ?? [] as $hid) {
+                foreach ($hostGroups[$hid] ?? [] as $gid) {
+                    if (!isset($groupSev[$gid]) || $sev > $groupSev[$gid]) {
+                        $groupSev[$gid] = $sev;
+                    }
+                }
+            }
+        }
+        // maintenance per group
+        $groupMaint = [];
+        foreach ($hostMaint as $hid => $inMaint) {
+            if (!$inMaint) continue;
+            foreach ($hostGroups[$hid] ?? [] as $gid) {
+                $groupMaint[$gid] = true;
+            }
+        }
+
+        $rank = ['down' => 3, 'degraded' => 2, 'maintenance' => 1, 'operational' => 0];
+        $rows = [];
+        foreach ($groups as $g) {
+            $gid = $g['groupid'];
+            $sev = $groupSev[$gid] ?? -1;
+            if ($sev >= 4)            $st = 'down';
+            elseif ($sev >= 2)        $st = 'degraded';
+            elseif (!empty($groupMaint[$gid])) $st = 'maintenance';
+            else                      $st = 'operational';
+            $rows[] = ['name' => $g['name'], 'status' => $st, 'severity' => max(0, $sev)];
+        }
+
+        // worst-first, then alphabetical
+        usort($rows, function ($a, $b) use ($rank) {
+            $d = $rank[$b['status']] - $rank[$a['status']];
+            return $d !== 0 ? $d : strcasecmp($a['name'], $b['name']);
+        });
+
+        return array_slice($rows, 0, $limit);
     }
 }

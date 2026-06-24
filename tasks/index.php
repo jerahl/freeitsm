@@ -23,6 +23,7 @@ $translationNamespaces = ['common', 'tasks'];
     <script src="../assets/js/i18n.js"></script>
     <script src="../assets/js/tinymce/tinymce.min.js"></script>
     <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
+    <link rel="stylesheet" href="../assets/css/zabbix-theme-generated.css">
 </head>
 <body data-analyst-id="<?php echo $_SESSION['analyst_id'] ?? ''; ?>">
     <?php include 'includes/header.php'; ?>

@@ -71,6 +71,7 @@ $translationNamespaces = ['common', 'tickets'];
         .freemail-note { font-size: 12px; color: #ef6c00; margin-bottom: 12px; }
     </style>
     <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme-generated.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

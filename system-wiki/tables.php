@@ -90,6 +90,7 @@ $translationNamespaces = ['common', 'system-wiki'];
         .no-data { text-align: center; padding: 40px; color: #aaa; }
     </style>
     <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
+    <link rel="stylesheet" href="../assets/css/zabbix-theme-generated.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>

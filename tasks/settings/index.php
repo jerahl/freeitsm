@@ -87,6 +87,7 @@ $translationNamespaces = ['common', 'tasks'];
         .card-field-desc { font-size: 13px; color: #888; margin-top: 2px; line-height: 1.4; }
     </style>
     <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme-generated.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

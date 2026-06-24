@@ -83,18 +83,40 @@ code, kbd, pre { background: var(--zbx-bg-2) !important; color: #93c5fd !importa
 }
 .nav-btn.logout:hover { background: #5a2330 !important; border-color: var(--zbx-sev-disaster) !important; color: #fff !important; }
 
-/* ── Layout containers / sidebars / lists ─────────────────────────────── */
-.container, .main-container, .page-wrap, .content, .main, .main-content,
-.folder-container, .email-list-container, .list-container, .panel-body,
-.workspace, .layout, .module-content {
-    background: var(--zbx-bg) !important;
+/* ── Layout containers / sidebars / content areas ─────────────────────────
+   Broad substring match so module-specific names (.knowledge-container,
+   .changes-sidebar, .article-content, .chart-container-inner …) are caught
+   without enumerating every module. Uses background-color so gradient/image
+   backgrounds (buttons, module headers) survive. Runs BEFORE the card/panel
+   and chrome rules so those can still claim the raised "panel" shade. */
+[class*="container"], [class*="content"], [class*="-main"], [class*="main-"],
+[class*="-list"], [class*="-body"], [class*="-area"], [class*="-pane"],
+[class*="-view"], [class*="-wrap"], [class*="wrapper"], [class*="-page"],
+[class*="-column"], [class*="layout"], [class*="-grid"], [class*="-form"],
+[class*="editor"], [class*="-board"], [class*="workspace"], [class*="-stage"],
+.content, .main, .page-wrap, .panel-body {
+    background-color: var(--zbx-bg) !important;
     color: var(--zbx-text);
+    border-color: var(--zbx-border);
 }
-.sidebar, .side-panel, .folder-list, .nav-sidebar, .left-panel,
-.email-list, .folder-header {
-    background: var(--zbx-bg-2) !important;
+[class*="sidebar"], [class*="side-panel"], [class*="-rail"], [class*="-nav"],
+.folder-list, .nav-sidebar, .left-panel, .email-list, .folder-header {
+    background-color: var(--zbx-bg-2) !important;
     border-color: var(--zbx-border) !important;
     color: var(--zbx-text);
+}
+
+/* Lighten body text that modules hardcoded dark (#333/#666…) so it stays
+   readable on the new dark surfaces. Semantic-coloured elements are restored
+   to their own colour by the exemption rule further below. */
+p, li, dd, dt, label, caption, blockquote, figcaption, small, strong, em, b, th,
+.title, .name, .value, .text, .desc, .description, .meta, .subtitle,
+.field-label, .stat-label, .stat-value, .card-title, .item-title, .row-title,
+.section-title, .empty-state, .no-data,
+[class*="-name"], [class*="-title"], [class*="-value"], [class*="-email"],
+[class*="-detail"], [class*="-heading"], [class*="-desc"], [class*="-text"],
+[class*="-username"], [class*="-subtitle"], [class*="-meta"] {
+    color: var(--zbx-text) !important;
 }
 
 /* ── Cards / panels / widgets / tiles (shared + module-specific names) ─── */
@@ -107,17 +129,33 @@ code, kbd, pre { background: var(--zbx-bg-2) !important; color: #93c5fd !importa
     color: var(--zbx-text);
     box-shadow: none !important;
 }
-/* Don't flatten elements that are intentionally coloured (badges/dots/severity). */
+/* Don't flatten elements that are intentionally coloured — restore their own
+   background AND text colour (overrides the broad bg/text rules above). */
 [class*="badge"], [class*="pill"], [class*="dot"], [class*="chip"],
-[class*="tag"], [class*="status-"], [class*="severity"], [class*="label-"],
-[class*="avatar"], [class*="swatch"] {
-    background: revert;
+[class*="tag"], [class*="status-"], [class*="severity"], [class*="priority-"],
+[class*="label-"], [class*="avatar"], [class*="swatch"], [class*="alert"],
+.success, .error, .warning, .danger, .info-msg,
+.green, .red, .amber, .orange, .blue, .yellow, .online, .offline {
+    background: revert !important;
+    color: revert !important;
 }
 
-.section-header, [class*="card-header"], [class*="panel-header"], [class*="modal-header"] {
-    background: var(--zbx-panel-2) !important;
+/* Sub-headers (detail/list/section strips) — :not(.header) so the top
+   navigation bar keeps its near-black shade. */
+.section-header, [class*="-header"]:not(.header) {
+    background-color: var(--zbx-panel-2) !important;
     border-color: var(--zbx-border) !important;
     color: var(--zbx-text-strong) !important;
+}
+
+/* List/grid rows that modules render as light bars (.module-row, .ticket-row,
+   .ticket-row-header …) — read as panels on the dark surface. */
+[class*="-row"] { background-color: var(--zbx-panel) !important; border-color: var(--zbx-border-soft) !important; }
+[class*="-row"]:hover { background-color: var(--zbx-bg-2) !important; }
+
+/* Selected list items (the light-blue highlight) → themed accent tint. */
+[class*="-item"].selected, [class*="-item"].active, li.selected, tr.selected {
+    background-color: var(--zbx-accent-soft) !important;
 }
 
 /* ── Headings / text helpers ──────────────────────────────────────────── */
@@ -236,3 +274,41 @@ input[type="checkbox"], input[type="radio"], input[type="range"], progress { acc
 .service-card { background: var(--zbx-panel) !important; border-color: var(--zbx-border) !important; }
 .service-card .service-name { color: var(--zbx-text-strong) !important; }
 .service-card .service-desc { color: var(--zbx-muted) !important; }
+
+/* Login — render the auth card as a raised panel (the broad container rule
+   would otherwise blend it into the page background). */
+.login-container { background: var(--zbx-panel) !important; border: 1px solid var(--zbx-border) !important; box-shadow: 0 8px 30px rgba(0,0,0,0.45) !important; }
+.login-header h1, .login-header h2, .login-title { color: var(--zbx-text-strong) !important; }
+.login-subtitle, .login-footer, .login-footer a { color: var(--zbx-muted) !important; }
+
+/* Knowledge — article reading pane should read as a panel, not flat canvas. */
+.article-content, .article-content-header { background: var(--zbx-panel) !important; border-color: var(--zbx-border) !important; }
+.article-content-body, .article-content-body * { color: var(--zbx-text) !important; }
+.article-card { background: var(--zbx-panel) !important; border-color: var(--zbx-border) !important; }
+
+/* Change Management — detail pane as a panel; list rows readable. */
+.change-detail-content { background: var(--zbx-panel) !important; }
+
+/* Charts — keep the plot area on a panel surface (Chart.js draws axis/legend
+   text itself; if labels are hard to read, the chart's JS colours need
+   updating — CSS can't reach canvas-rendered text). */
+[class*="chart-container"], [class*="chart-wrap"], [class*="chart-card"], .chart-footer {
+    background-color: var(--zbx-panel) !important;
+    border-color: var(--zbx-border) !important;
+}
+
+/* ── Setup verification page (setup/index.php) ────────────────────────── */
+.setup-container { background: var(--zbx-panel) !important; border: 1px solid var(--zbx-border) !important; box-shadow: 0 10px 40px rgba(0,0,0,0.45) !important; }
+.setup-header h1 { color: var(--zbx-text-strong) !important; }
+.check-item { border-bottom-color: var(--zbx-border-soft) !important; }
+.check-name { color: var(--zbx-text-strong) !important; }
+.check-detail { color: var(--zbx-muted) !important; }
+.check-detail.fail { color: #ff6b6b !important; }
+.check-detail.warn { color: var(--zbx-sev-warning) !important; }
+.admin-section { background: var(--zbx-panel-2) !important; border-color: var(--zbx-border) !important; }
+.admin-section h2 { color: var(--zbx-text-strong) !important; }
+.admin-section p { color: var(--zbx-muted) !important; }
+.credentials { background: var(--zbx-bg) !important; border: 1px solid var(--zbx-border) !important; color: var(--zbx-text) !important; }
+.php-version { color: var(--zbx-faint) !important; }
+.admin-btn { background: var(--zbx-accent) !important; }
+.admin-btn:hover { background: var(--zbx-accent-hover) !important; }

@@ -105,6 +105,7 @@ return [
     // Used by the home cards (name + description tooltip) and the waffle panel (name only).
     'modules' => [
         'watchtower'     => ['name' => 'Watchtower',  'description' => 'Unified attention dashboard across all modules'],
+        'it-team-space'  => ['name' => 'IT Space',    'description' => 'Internal IT team hub — tools, status, projects and runbooks'],
         'tickets'        => ['name' => 'Tickets',     'description' => 'Manage support requests, emails, and user issues'],
         'assets'         => ['name' => 'Assets',      'description' => 'Track IT assets and user assignments'],
         'knowledge'      => ['name' => 'Knowledge',   'description' => 'Create and browse knowledge base articles'],

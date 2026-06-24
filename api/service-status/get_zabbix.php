@@ -5,6 +5,7 @@
  */
 session_start(['read_and_close' => true]);
 require_once '../../config.php';
+require_once '../../includes/functions.php';
 require_once '../../includes/zabbix.php';
 
 header('Content-Type: application/json');
@@ -15,7 +16,8 @@ if (!isset($_SESSION['analyst_id'])) {
 }
 
 try {
-    $zbx = new ZabbixClient();
+    $conn = connectToDatabase();
+    $zbx = ZabbixClient::fromSettings($conn);
 
     if (!$zbx->isConfigured()) {
         echo json_encode([

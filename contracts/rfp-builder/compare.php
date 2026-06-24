@@ -28,6 +28,7 @@ $translationNamespaces = ['common', 'contracts'];
     <script src="../../assets/js/i18n.js"></script>
     <link rel="stylesheet" href="../../assets/css/inbox.css">
     <script src="../../assets/js/chart.min.js"></script>
+    <script src="../../assets/js/chart-theme.js"></script>
     <style>
         .page-wrap { padding: 30px 40px; background: #f5f5f5; height: calc(100vh - 48px); overflow-y: auto; box-sizing: border-box; }
 
@@ -159,6 +160,7 @@ $translationNamespaces = ['common', 'contracts'];
         .empty-card a:hover { text-decoration: underline; }
     </style>
     <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme-generated.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

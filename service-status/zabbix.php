@@ -6,6 +6,7 @@
  */
 session_start();
 require_once '../config.php';
+require_once '../includes/functions.php';
 require_once '../includes/i18n.php';
 I18n::initFromSession();
 
@@ -13,7 +14,15 @@ $current_page = 'zabbix';
 $path_prefix = '../';
 $translationNamespaces = ['common', 'service-status'];
 
-$refreshSeconds = defined('ZABBIX_REFRESH_SECONDS') ? (int) ZABBIX_REFRESH_SECONDS : 30;
+// Auto-refresh interval comes from System > Zabbix (DB), falling back to the
+// ZABBIX_REFRESH_SECONDS constant via zabbixSettingsLoad().
+$refreshSeconds = 30;
+try {
+    require_once '../includes/zabbix_settings.php';
+    $refreshSeconds = (int) zabbixSettingsLoad(connectToDatabase())['refresh'];
+} catch (Exception $e) {
+    $refreshSeconds = defined('ZABBIX_REFRESH_SECONDS') ? (int) ZABBIX_REFRESH_SECONDS : 30;
+}
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo htmlspecialchars(I18n::getLocale()); ?>">
@@ -162,6 +171,7 @@ $refreshSeconds = defined('ZABBIX_REFRESH_SECONDS') ? (int) ZABBIX_REFRESH_SECON
         .zbx-empty-row td { text-align: center; color: #64748b; padding: 30px; }
     </style>
     <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
+    <link rel="stylesheet" href="../assets/css/zabbix-theme-generated.css">
 </head>
 <body>
     <?php require_once 'includes/header.php'; ?>

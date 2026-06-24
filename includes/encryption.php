@@ -41,6 +41,7 @@ define('ENCRYPTED_SETTING_KEYS', [
     'cmdb_ai_api_key',
     'workflow_ai_api_key',
     'forms_ai_api_key',
+    'zabbix_api_token',
 ]);
 
 /**
@@ -62,6 +63,7 @@ define('MASKED_SETTING_KEYS', [
     'cmdb_ai_api_key',
     'workflow_ai_api_key',
     'forms_ai_api_key',
+    'zabbix_api_token',
 ]);
 
 /**
