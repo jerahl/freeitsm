@@ -256,6 +256,7 @@ $translationNamespaces = ['common', 'reporting'];
     </div>
 
     <script src="../../assets/js/chart.min.js"></script>
+    <script src="../../assets/js/chart-theme.js"></script>
     <script>
         const API_BASE = '../../api/intune/';
         const chartInstances = {};

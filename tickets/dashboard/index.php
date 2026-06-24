@@ -269,6 +269,7 @@ $translationNamespaces = ['common', 'tickets'];
     <script>window.translations = <?php echo json_encode(I18n::exportForJs($translationNamespaces), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE); ?>;</script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/chart.min.js"></script>
+    <script src="../../assets/js/chart-theme.js"></script>
     <script src="../../assets/js/widget-editor.js"></script>
     <script>
         const API_BASE = '../../api/tickets/';

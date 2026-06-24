@@ -21,6 +21,7 @@ $translationNamespaces = ['common', 'asset-management'];
     <script>window.translations = <?php echo json_encode(I18n::exportForJs($translationNamespaces), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE); ?>;</script>
     <script src="../../assets/js/i18n.js"></script>
     <script src="../../assets/js/chart.min.js"></script>
+    <script src="../../assets/js/chart-theme.js"></script>
     <style>
         /* Module accent — drives toggle, focus rings, button colours.
            Modal form CSS lives entirely in inbox.css. */
