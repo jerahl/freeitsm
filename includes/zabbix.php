@@ -32,12 +32,29 @@ class ZabbixClient
     private $url;
     private $token;
     private $minSeverity;
+    private $verifySsl;
 
-    public function __construct($url = null, $token = null)
+    public function __construct($url = null, $token = null, $minSeverity = null, $verifySsl = null)
     {
         $this->url = rtrim($url ?? (defined('ZABBIX_API_URL') ? ZABBIX_API_URL : ''), '/');
         $this->token = $token ?? (defined('ZABBIX_API_TOKEN') ? ZABBIX_API_TOKEN : '');
-        $this->minSeverity = defined('ZABBIX_MIN_SEVERITY') ? (int) ZABBIX_MIN_SEVERITY : 0;
+        $this->minSeverity = $minSeverity !== null
+            ? (int) $minSeverity
+            : (defined('ZABBIX_MIN_SEVERITY') ? (int) ZABBIX_MIN_SEVERITY : 0);
+        $this->verifySsl = $verifySsl !== null
+            ? (bool) $verifySsl
+            : (defined('SSL_VERIFY_PEER') ? (bool) SSL_VERIFY_PEER : true);
+    }
+
+    /**
+     * Build a client from the DB-backed System > Zabbix settings (falls back to
+     * the ZABBIX_* constants for any unset value).
+     */
+    public static function fromSettings(PDO $conn): self
+    {
+        require_once __DIR__ . '/zabbix_settings.php';
+        $cfg = zabbixSettingsLoad($conn);
+        return new self($cfg['url'], $cfg['token'], $cfg['min_severity'], $cfg['verify_ssl']);
     }
 
     /** Whether the integration has the minimum config needed to talk to Zabbix. */
@@ -81,7 +98,7 @@ class ZabbixClient
             'id'      => 1,
         ]);
 
-        $verifySsl = defined('SSL_VERIFY_PEER') ? SSL_VERIFY_PEER : true;
+        $verifySsl = $this->verifySsl;
         $ch = curl_init($this->url . '/api_jsonrpc.php');
         curl_setopt_array($ch, [
             CURLOPT_POST           => true,

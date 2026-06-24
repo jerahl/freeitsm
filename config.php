@@ -27,17 +27,19 @@ ini_set('display_errors', 1);
 /**
  * Zabbix integration (Service Status > Zabbix dashboard)
  * -----------------------------------------------------------------------------
- * Fill these in to pull live problems/severity from your Zabbix server via the
- * JSON-RPC API. Requires Zabbix 6.0+ (Bearer API token auth).
+ * PREFERRED: configure this from the UI under System > Zabbix (stored in the
+ * database, token encrypted at rest). The constants below are only a FALLBACK
+ * used until settings are saved there — handy for first-boot / Docker env.
  *
- *   1. In Zabbix: Users > API tokens > Create API token (assign to a user with
- *      read access to the hosts/problems you want surfaced).
- *   2. ZABBIX_API_URL  — your frontend URL WITHOUT the trailing api_jsonrpc.php,
+ * Requires Zabbix 6.0+ (Bearer API token auth). To use the fallback:
+ *   1. In Zabbix: Users > API tokens > Create API token (read access to the
+ *      hosts/problems you want surfaced).
+ *   2. ZABBIX_API_URL  — frontend URL WITHOUT the trailing api_jsonrpc.php,
  *      e.g. 'https://zabbix.example.com' (the client appends /api_jsonrpc.php).
  *   3. ZABBIX_API_TOKEN — the generated API token string.
  *
- * Leave ZABBIX_API_URL empty to keep the integration disabled; the dashboard
- * page then shows a "not configured" message instead of erroring.
+ * Leave ZABBIX_API_URL empty (and nothing saved in System > Zabbix) to keep
+ * the integration disabled; the dashboard then shows a "not configured" notice.
  */
 if (!defined('ZABBIX_API_URL'))   define('ZABBIX_API_URL', '');   // e.g. 'https://zabbix.example.com'
 if (!defined('ZABBIX_API_TOKEN')) define('ZABBIX_API_TOKEN', ''); // e.g. 'a1b2c3...'

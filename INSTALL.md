@@ -216,18 +216,18 @@ requires **Zabbix 6.0+** (7.4 tested) and an **API token**.
 
 1. In Zabbix: **Users → API tokens → Create API token**, assigned to a user
    with read access to the hosts/problems you want surfaced. Copy the token.
-2. Configure FreeITSM:
+2. Configure FreeITSM — **preferred: in the UI under System → Zabbix**. Enter
+   the frontend URL and API token, set the refresh interval / minimum severity,
+   then use **Test connection** to verify. The token is encrypted at rest in
+   the database. This works the same for Docker and manual installs.
+3. *(Optional fallback)* You can instead seed the connection before first login
+   via environment/constants — handy for automated deploys. These are only used
+   until you save in System → Zabbix:
    - **Docker:** set `ZABBIX_API_URL` and `ZABBIX_API_TOKEN` (see the
      [`.env` example](#set-passwords-and-zabbix-via-a-env-file)).
-   - **Manual:** edit the `ZABBIX_*` constants near the top of `config.php`:
-     ```php
-     define('ZABBIX_API_URL',   'https://zabbix.example.com'); // no trailing /api_jsonrpc.php
-     define('ZABBIX_API_TOKEN', 'your-zabbix-api-token');
-     define('ZABBIX_REFRESH_SECONDS', 30); // dashboard auto-refresh; 0 to disable
-     define('ZABBIX_MIN_SEVERITY', 0);     // 0=show all … 5=Disaster only
-     ```
-3. Open **Service Status → Zabbix**. If the URL/token are empty the page shows
-   a friendly "not configured" message instead of erroring.
+   - **Manual:** edit the `ZABBIX_*` constants near the top of `config.php`.
+4. Open **Service Status → Zabbix**. If nothing is configured (UI or fallback),
+   the page shows a friendly "not configured" message instead of erroring.
 
 > The FreeITSM server must be able to reach the Zabbix frontend over HTTPS. If
 > Zabbix uses a self-signed certificate, note that certificate verification is
