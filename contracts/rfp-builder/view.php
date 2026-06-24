@@ -183,6 +183,7 @@ $translationNamespaces = ['common', 'contracts'];
         .loading, .error-state { text-align: center; padding: 60px; color: #999; }
         .error-state { color: #d13438; }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

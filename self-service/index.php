@@ -292,6 +292,7 @@ $translationNamespaces = ['common', 'self-service'];
             .portal-nav a span { display: none; }
         }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <div class="portal-header">

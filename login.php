@@ -539,6 +539,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         .modal-close:hover { color: #333; }
     </style>
+    <link rel="stylesheet" href="assets/css/zabbix-theme.css">
 </head>
 <body>
     <div class="login-container">

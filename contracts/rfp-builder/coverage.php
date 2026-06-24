@@ -147,6 +147,7 @@ $translationNamespaces = ['common', 'contracts'];
         .empty-card a { color: #f59e0b; text-decoration: none; font-weight: 600; }
         .empty-card a:hover { text-decoration: underline; }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

@@ -103,6 +103,7 @@ $redirectUri = $scheme . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . BASE_U
         .test-result.ok { display: block; background: #e8f5e9; color: #2e7d32; }
         .test-result.err { display: block; background: #ffebee; color: #c62828; }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

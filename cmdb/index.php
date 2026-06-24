@@ -226,6 +226,7 @@ $translationNamespaces = ['common', 'cmdb'];
         .ac-result .ac-class { color: #9ca3af; font-size: 11px; }
         .ac-empty { padding: 8px; color: #9ca3af; font-size: 12px; text-align: center; }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>

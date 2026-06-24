@@ -632,6 +632,7 @@ $translationNamespaces = ['common', 'cmdb'];
         .float-modal .form-check input { width: auto; }
         .key-hint { font-family: 'Consolas', 'Monaco', monospace; font-size: 12px; color: #6b7280; }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>

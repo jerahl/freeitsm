@@ -1360,6 +1360,7 @@ $translationNamespaces = ['common', 'network-mapper'];
         /* Use the cyan default arrowhead in non-selected form too */
         .nm-canvas-inner.is-exporting .nm-connector-line { marker-end: url(#nm-arrow) !important; }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>

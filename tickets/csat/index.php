@@ -146,6 +146,7 @@ table.analyst-table td.score { font-weight: 600; }
 
 .empty { color: #999; font-style: italic; padding: 20px 0; text-align: center; }
 </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
 

@@ -134,6 +134,7 @@ $translationNamespaces = ['common', 'contracts'];
             padding: 40px; text-align: center; color: #999; font-size: 13px;
         }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

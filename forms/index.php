@@ -221,6 +221,7 @@ $translationNamespaces = ['common', 'forms'];
         .confirm-box p { margin: 0 0 18px; color: #666; font-size: 14px; line-height: 1.5; }
         .confirm-actions { display: flex; justify-content: flex-end; gap: 10px; }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>

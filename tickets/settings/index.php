@@ -220,6 +220,7 @@ $translationNamespaces = ['common', 'tickets'];
         /* Toggle switch — base styles in inbox.css; just pin the accent. */
         body { --accent: #0078d4; }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <div class="settings-shell">

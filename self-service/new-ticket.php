@@ -321,6 +321,7 @@ $translationNamespaces = ['common', 'self-service'];
             margin-right: 4px;
         }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <div class="portal-header">

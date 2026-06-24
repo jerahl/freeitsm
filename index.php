@@ -151,6 +151,7 @@ $allowed_modules = $_SESSION['allowed_modules'] ?? null;
             font-size: 12px;
         }
     </style>
+    <link rel="stylesheet" href="assets/css/zabbix-theme.css">
 </head>
 <body>
     <div class="landing-header">

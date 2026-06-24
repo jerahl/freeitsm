@@ -100,6 +100,7 @@ $translationNamespaces = ['common', 'system'];
         .routing-warn { display: flex; gap: 8px; font-size: 12px; color: #8a5a00; background: #fff8e1; border: 1px solid #ffe0a3; border-radius: 5px; padding: 8px 10px; margin-top: 8px; }
         .routing-empty { font-size: 12px; color: #aaa; font-style: italic; }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

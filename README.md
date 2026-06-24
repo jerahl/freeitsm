@@ -96,6 +96,10 @@ A comprehensive web-based IT Service Management (ITSM) platform with 17 integrat
 
 ## 🚀 Quick Start
 
+> **Deploying to a server?** See **[INSTALL.md](INSTALL.md)** for a full
+> production guide (Docker & manual LAMP, HTTPS, cron jobs, the Zabbix
+> dashboard integration, and hardening).
+
 ### Docker (Recommended)
 
 The fastest way to get FreeITSM running — no PHP, MySQL, or web server setup required.

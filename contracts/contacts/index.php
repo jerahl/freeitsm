@@ -160,6 +160,7 @@ $translationNamespaces = ['common', 'contracts'];
         .btn-primary { background-color: #f59e0b; color: white; }
         .btn-primary:hover { background-color: #d97706; }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

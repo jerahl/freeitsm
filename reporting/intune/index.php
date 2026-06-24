@@ -201,6 +201,7 @@ $translationNamespaces = ['common', 'reporting'];
             .kpi-strip { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php require_once '../includes/header.php'; ?>

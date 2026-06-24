@@ -187,6 +187,7 @@ $today = date('j F Y');
             .pv-section-body { page-break-before: auto; }
         }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <div class="pv-toolbar">

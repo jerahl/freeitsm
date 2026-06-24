@@ -120,6 +120,7 @@ $translationNamespaces = ['common', 'system-wiki'];
         .status-badge.failed { background: #fce4ec; color: #c62828; }
         .no-data { text-align: center; padding: 40px; color: #aaa; font-size: 14px; }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>

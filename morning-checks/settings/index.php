@@ -158,6 +158,7 @@ $translationNamespaces = ['common', 'morning-checks'];
         /* Toggle switch — base styles in inbox.css; just pin the accent. */
         body { --accent: #007bff; }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

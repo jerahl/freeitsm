@@ -169,6 +169,7 @@ $translationNamespaces = ['common', 'contracts'];
         .search-result-title { font-weight: 600; color: #333; font-size: 14px; }
         .search-result-meta { font-size: 12px; color: #888; margin-top: 4px; }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>

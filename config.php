@@ -25,6 +25,28 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 /**
+ * Zabbix integration (Service Status > Zabbix dashboard)
+ * -----------------------------------------------------------------------------
+ * Fill these in to pull live problems/severity from your Zabbix server via the
+ * JSON-RPC API. Requires Zabbix 6.0+ (Bearer API token auth).
+ *
+ *   1. In Zabbix: Users > API tokens > Create API token (assign to a user with
+ *      read access to the hosts/problems you want surfaced).
+ *   2. ZABBIX_API_URL  — your frontend URL WITHOUT the trailing api_jsonrpc.php,
+ *      e.g. 'https://zabbix.example.com' (the client appends /api_jsonrpc.php).
+ *   3. ZABBIX_API_TOKEN — the generated API token string.
+ *
+ * Leave ZABBIX_API_URL empty to keep the integration disabled; the dashboard
+ * page then shows a "not configured" message instead of erroring.
+ */
+if (!defined('ZABBIX_API_URL'))   define('ZABBIX_API_URL', '');   // e.g. 'https://zabbix.example.com'
+if (!defined('ZABBIX_API_TOKEN')) define('ZABBIX_API_TOKEN', ''); // e.g. 'a1b2c3...'
+// Auto-refresh interval (seconds) for the dashboard. 0 disables auto-refresh.
+if (!defined('ZABBIX_REFRESH_SECONDS')) define('ZABBIX_REFRESH_SECONDS', 30);
+// Minimum severity to show (0=Not classified … 5=Disaster). 0 shows everything.
+if (!defined('ZABBIX_MIN_SEVERITY')) define('ZABBIX_MIN_SEVERITY', 0);
+
+/**
  * BASE_URL — absolute URL path prefix for the app's deployment root.
  *
  * Examples:

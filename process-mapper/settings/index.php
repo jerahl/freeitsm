@@ -120,6 +120,7 @@ $shapes = include '../includes/shapes.php';
             color: #555;
         }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

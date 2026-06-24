@@ -229,6 +229,7 @@ $translationNamespaces = ['common', 'forms'];
             gap: 8px;
         }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>

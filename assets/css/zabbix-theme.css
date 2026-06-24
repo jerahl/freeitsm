@@ -1,0 +1,238 @@
+/**
+ * Zabbix 7.4 Dark Theme — app-wide override layer for FreeITSM
+ * ============================================================================
+ * Loaded AFTER each page's own stylesheet/inline <style> so it wins the
+ * cascade. Recolours the shared chrome (header, nav, sidebars, tables, forms,
+ * modals, buttons) and the common component vocabulary reused across modules.
+ *
+ * Module pages use their own class names for cards/panels, so we also catch
+ * them with substring attribute selectors ([class*="card"] etc.). Layout,
+ * spacing and sizing are left untouched — this only swaps the palette.
+ *
+ * Palette mirrors the Zabbix 7.4 "Dark" frontend theme.
+ */
+
+:root {
+    --zbx-bg:          #0e1726;  /* app canvas */
+    --zbx-bg-2:        #14203a;  /* raised regions, list backgrounds */
+    --zbx-panel:       #1b2740;  /* cards, panels, modals, widgets */
+    --zbx-panel-2:     #15203a;  /* secondary panels */
+    --zbx-elevated:    #233152;  /* inputs, hover states */
+    --zbx-border:      #2b3a5a;  /* primary borders */
+    --zbx-border-soft: #1c2840;  /* subtle dividers */
+    --zbx-text:        #d5dbe3;  /* body text */
+    --zbx-text-strong: #f1f5f9;  /* headings */
+    --zbx-muted:       #8a98ad;  /* secondary text */
+    --zbx-faint:       #64748b;  /* tertiary / placeholder */
+    --zbx-accent:      #4796e3;  /* Zabbix blue accent */
+    --zbx-accent-hover:#5fa8ec;
+    --zbx-accent-soft: rgba(71,150,227,0.15);
+    --zbx-header:      #0c1322;  /* top bar */
+    /* Zabbix severity palette */
+    --zbx-sev-disaster: #e45959;
+    --zbx-sev-high:     #e97659;
+    --zbx-sev-average:  #ffa059;
+    --zbx-sev-warning:  #ffc859;
+    --zbx-sev-info:     #7499ff;
+    --zbx-ok:           #59db8f;
+}
+
+/* ── Base canvas ──────────────────────────────────────────────────────── */
+html, body {
+    background: var(--zbx-bg) !important;
+    color: var(--zbx-text);
+    color-scheme: dark;
+}
+
+/* Native form-control / scrollbar dark rendering */
+* { scrollbar-color: #38496b var(--zbx-bg); }
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: var(--zbx-bg); }
+::-webkit-scrollbar-thumb { background: #38496b; border-radius: 6px; border: 2px solid var(--zbx-bg); }
+::-webkit-scrollbar-thumb:hover { background: #4a5e85; }
+
+a { color: var(--zbx-accent); }
+a:hover { color: var(--zbx-accent-hover); }
+hr { border-color: var(--zbx-border) !important; }
+code, kbd, pre { background: var(--zbx-bg-2) !important; color: #93c5fd !important; }
+
+/* ── Top bar / navigation ─────────────────────────────────────────────── */
+.header {
+    background: var(--zbx-header) !important;
+    border-bottom: 1px solid var(--zbx-border) !important;
+    box-shadow: none !important;
+}
+.header h1, .module-title, .user-info { color: var(--zbx-text-strong) !important; }
+
+.header-nav .nav-btn,
+.nav-btn, .nav-btn:link, .nav-btn:visited, .nav-btn:active {
+    background: rgba(255,255,255,0.04) !important;
+    border-color: rgba(255,255,255,0.10) !important;
+    color: var(--zbx-muted) !important;
+}
+.header-nav .nav-btn:hover, .nav-btn:hover {
+    background: var(--zbx-accent-soft) !important;
+    border-color: var(--zbx-accent) !important;
+    color: var(--zbx-text-strong) !important;
+}
+.header-nav .nav-btn.active,
+.nav-btn.active, .nav-btn.active:link, .nav-btn.active:visited {
+    background: var(--zbx-accent) !important;
+    border-color: var(--zbx-accent) !important;
+    color: #fff !important;
+}
+.nav-btn.logout:hover { background: #5a2330 !important; border-color: var(--zbx-sev-disaster) !important; color: #fff !important; }
+
+/* ── Layout containers / sidebars / lists ─────────────────────────────── */
+.container, .main-container, .page-wrap, .content, .main, .main-content,
+.folder-container, .email-list-container, .list-container, .panel-body,
+.workspace, .layout, .module-content {
+    background: var(--zbx-bg) !important;
+    color: var(--zbx-text);
+}
+.sidebar, .side-panel, .folder-list, .nav-sidebar, .left-panel,
+.email-list, .folder-header {
+    background: var(--zbx-bg-2) !important;
+    border-color: var(--zbx-border) !important;
+    color: var(--zbx-text);
+}
+
+/* ── Cards / panels / widgets / tiles (shared + module-specific names) ─── */
+[class*="card"], [class*="panel"], [class*="widget"], [class*="tile"],
+[class*="-box"], [class*="modal"], [class*="dropdown"], [class*="popup"],
+[class*="menu-panel"], [class*="dialog"], .stat, .stats, .well, .section,
+.section-header, .toolbar, .tabs, .tab-content {
+    background: var(--zbx-panel);
+    border-color: var(--zbx-border) !important;
+    color: var(--zbx-text);
+    box-shadow: none !important;
+}
+/* Don't flatten elements that are intentionally coloured (badges/dots/severity). */
+[class*="badge"], [class*="pill"], [class*="dot"], [class*="chip"],
+[class*="tag"], [class*="status-"], [class*="severity"], [class*="label-"],
+[class*="avatar"], [class*="swatch"] {
+    background: revert;
+}
+
+.section-header, [class*="card-header"], [class*="panel-header"], [class*="modal-header"] {
+    background: var(--zbx-panel-2) !important;
+    border-color: var(--zbx-border) !important;
+    color: var(--zbx-text-strong) !important;
+}
+
+/* ── Headings / text helpers ──────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6,
+.page-title, .section-title, .stat-value, .modal-title, .card-title {
+    color: var(--zbx-text-strong) !important;
+}
+.page-subtitle, .subtitle, .muted, .text-muted, .hint, .help-text,
+.description, .meta, .timestamp, .count, .stat-label, .breadcrumb {
+    color: var(--zbx-muted) !important;
+}
+
+/* ── Tables ───────────────────────────────────────────────────────────── */
+table { background: transparent !important; color: var(--zbx-text); border-color: var(--zbx-border) !important; }
+th, thead th {
+    background: var(--zbx-panel-2) !important;
+    color: var(--zbx-muted) !important;
+    border-color: var(--zbx-border) !important;
+}
+td { border-color: var(--zbx-border-soft) !important; color: var(--zbx-text); }
+tr:hover td, tbody tr:hover { background: var(--zbx-bg-2) !important; }
+.data-table, .data-table td, .data-table th { border-color: var(--zbx-border) !important; }
+
+/* ── Forms ────────────────────────────────────────────────────────────── */
+input, select, textarea,
+.form-control, .input, .search-input, .text-input {
+    background: var(--zbx-elevated) !important;
+    border: 1px solid var(--zbx-border) !important;
+    color: var(--zbx-text) !important;
+}
+input::placeholder, textarea::placeholder { color: var(--zbx-faint) !important; }
+input:focus, select:focus, textarea:focus, .form-control:focus {
+    border-color: var(--zbx-accent) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px var(--zbx-accent-soft) !important;
+}
+label, .form-group label, .field-label { color: var(--zbx-muted) !important; }
+/* checkbox/radio/range pick up the accent */
+input[type="checkbox"], input[type="radio"], input[type="range"], progress { accent-color: var(--zbx-accent); }
+
+/* ── Buttons ──────────────────────────────────────────────────────────── */
+.btn, button.btn, .btn-secondary, .action-btn, .icon-btn, .btn-default, .btn-light {
+    background: var(--zbx-elevated) !important;
+    border: 1px solid var(--zbx-border) !important;
+    color: var(--zbx-text) !important;
+}
+.btn:hover, .btn-secondary:hover, .action-btn:hover, .icon-btn:hover {
+    background: #2c3d63 !important;
+    border-color: var(--zbx-accent) !important;
+    color: var(--zbx-text-strong) !important;
+}
+.btn-primary, button.btn-primary, .btn.primary, .btn-save, .btn-create {
+    background: var(--zbx-accent) !important;
+    border-color: var(--zbx-accent) !important;
+    color: #fff !important;
+}
+.btn-primary:hover, .btn.primary:hover { background: var(--zbx-accent-hover) !important; border-color: var(--zbx-accent-hover) !important; }
+.btn-danger, .btn.danger, .action-btn.delete {
+    background: transparent !important;
+    border-color: var(--zbx-sev-disaster) !important;
+    color: var(--zbx-sev-disaster) !important;
+}
+.btn-danger:hover, .btn.danger:hover { background: var(--zbx-sev-disaster) !important; color: #fff !important; }
+
+/* ── Modals / overlays ────────────────────────────────────────────────── */
+.modal, .modal-overlay, .overlay, .backdrop {
+    background: rgba(4, 9, 18, 0.66) !important;
+}
+.modal-content, .modal-body, .modal-dialog, .dialog-content, .popup-content {
+    background: var(--zbx-panel) !important;
+    border: 1px solid var(--zbx-border) !important;
+    color: var(--zbx-text) !important;
+}
+.modal-footer, .modal-actions { background: var(--zbx-panel-2) !important; border-color: var(--zbx-border) !important; }
+
+/* ── Empty / error / loading states ───────────────────────────────────── */
+.empty-state, .error-state, .empty, .no-data, .loading, .spinner-wrap {
+    background: transparent !important;
+    color: var(--zbx-muted) !important;
+}
+
+/* ── Severity helpers (so module status colours stay on-brand) ────────── */
+.sev-disaster, .severity-5, .priority-critical { color: var(--zbx-sev-disaster) !important; }
+.sev-high, .severity-4, .priority-high         { color: var(--zbx-sev-high) !important; }
+.sev-average, .severity-3                       { color: var(--zbx-sev-average) !important; }
+.sev-warning, .severity-2                       { color: var(--zbx-sev-warning) !important; }
+.sev-info, .severity-1                          { color: var(--zbx-sev-info) !important; }
+
+/* ── Global chrome: waffle launcher + user/account menus ──────────────── */
+.waffle-panel, .waffle-panel-header { background: var(--zbx-panel) !important; border-color: var(--zbx-border) !important; color: var(--zbx-text) !important; }
+.waffle-search input, .waffle-search-input { background: var(--zbx-elevated) !important; border-color: var(--zbx-border) !important; color: var(--zbx-text) !important; }
+.waffle-module-item:hover, .waffle-module:hover { background: var(--zbx-bg-2) !important; }
+.waffle-module-name, .waffle-module-label { color: var(--zbx-text) !important; }
+.user-menu { background: var(--zbx-panel) !important; border: 1px solid var(--zbx-border) !important; }
+.user-menu-header { border-color: var(--zbx-border) !important; }
+.user-menu-name { color: var(--zbx-text-strong) !important; }
+.user-menu-username { color: var(--zbx-muted) !important; }
+.user-menu-item { color: var(--zbx-text) !important; }
+.user-menu-item:hover { background: var(--zbx-bg-2) !important; }
+.user-menu-divider { background: var(--zbx-border) !important; border-color: var(--zbx-border) !important; }
+.account-modal-box { background: var(--zbx-panel) !important; border: 1px solid var(--zbx-border) !important; color: var(--zbx-text) !important; }
+.account-modal-header { border-color: var(--zbx-border) !important; color: var(--zbx-text-strong) !important; }
+.account-modal-close:hover { color: var(--zbx-text-strong) !important; }
+
+/* ── Per-module dashboards with heavy inline styling ──────────────────── */
+/* Watchtower */
+.wt-container { background: var(--zbx-bg) !important; }
+.wt-title { color: var(--zbx-text-strong) !important; }
+.wt-card { background: var(--zbx-panel) !important; border-color: var(--zbx-border) !important; }
+.wt-card-header { border-color: var(--zbx-border-soft) !important; }
+.wt-card-name, .wt-card-name a { color: var(--zbx-text) !important; }
+.wt-refresh-btn { background: var(--zbx-elevated) !important; border-color: var(--zbx-border) !important; color: var(--zbx-muted) !important; }
+
+/* Service Status */
+.status-layout { background: var(--zbx-bg) !important; }
+.service-card { background: var(--zbx-panel) !important; border-color: var(--zbx-border) !important; }
+.service-card .service-name { color: var(--zbx-text-strong) !important; }
+.service-card .service-desc { color: var(--zbx-muted) !important; }

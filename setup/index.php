@@ -306,6 +306,7 @@ $translationNamespaces = ['common', 'setup'];
             margin-top: 15px;
         }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <div class="setup-container">
