@@ -33,6 +33,12 @@ require_once $path_prefix . 'includes/waffle-menu.php';
             </svg>
             <span><?php echo htmlspecialchars(function_exists('t') ? t('service-status.nav.status') : 'Status'); ?></span>
         </a>
+        <a href="<?php echo BASE_URL; ?>service-status/zabbix.php" class="nav-btn <?php echo $current_page === 'zabbix' ? 'active' : ''; ?>" title="Zabbix">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+            </svg>
+            <span>Zabbix</span>
+        </a>
         <a href="<?php echo BASE_URL; ?>service-status/settings/" class="nav-btn <?php echo $current_page === 'settings' ? 'active' : ''; ?>" title="<?php echo htmlspecialchars(function_exists('t') ? t('service-status.nav.settings') : 'Settings'); ?>">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="3"></circle>
