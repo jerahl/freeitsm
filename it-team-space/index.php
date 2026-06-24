@@ -156,14 +156,38 @@ $analyst_initials = strtoupper(substr($__parts[0] ?? 'A', 0, 1) . (isset($__part
             maintenance: { c: '#7499FF', label: 'Maintenance' },
             down: { c: '#E45959', label: 'Down' },
         };
-        const sysRaw = [
-            { name: 'Core Network', s: 'operational' },
-            { name: 'Student Wi-Fi', s: 'degraded' },
-            { name: 'PowerSchool SIS', s: 'operational' },
-            { name: 'Email (Microsoft 365)', s: 'operational' },
-            { name: 'Phone System (VoIP)', s: 'maintenance' },
-            { name: 'Nightly Backups', s: 'operational' },
-        ];
+        // System status is live from Zabbix (host groups → worst active problem).
+        let liveStatus = { state: 'loading', systems: null, error: '', at: '' };
+        function statusRowsHtml(systems) {
+            if (!systems.length) return `<div style="padding:14px;text-align:center;color:#7E848D;font-size:13px">No monitored host groups.</div>`;
+            return systems.map((x, i) => { const m = stMeta[x.status] || stMeta.operational; return `<div style="display:flex;align-items:center;gap:10px;padding:11px 14px;${i?'border-top:1px solid #23262C':''}"><span style="width:8px;height:8px;border-radius:50%;background:${m.c};flex:none;box-shadow:0 0 0 3px ${m.c}33"></span><span style="font-size:13.5px;font-weight:500;flex:1;color:#D6D9DE">${esc(x.name)}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;padding:2px 8px;border-radius:6px;background:${m.c}22;color:${m.c}">${esc(m.label)}</span></div>`; }).join('');
+        }
+        function statusPanelInner() {
+            if (liveStatus.state === 'loading') return `<div style="padding:16px;text-align:center;color:#6E747D;font-size:12.5px">Loading status…</div>`;
+            if (liveStatus.state === 'unconfigured') return `<div style="padding:16px;color:#9BA1A9;font-size:12.5px;line-height:1.5">Zabbix isn't configured yet. Set it up in <a href="../system/zabbix/" style="color:${ACCENT}">System → Zabbix</a> to see live status.</div>`;
+            if (liveStatus.state === 'error') return `<div style="padding:16px;color:#E45959;font-size:12.5px">${esc(liveStatus.error || 'Could not load status.')}</div>`;
+            return statusRowsHtml(liveStatus.systems || []);
+        }
+        function statusMetaText() {
+            if (liveStatus.state === 'ok') return 'Live from Zabbix · ' + (liveStatus.at || 'just now');
+            if (liveStatus.state === 'loading') return 'Connecting to Zabbix…';
+            if (liveStatus.state === 'unconfigured') return 'Not configured';
+            return 'Status unavailable';
+        }
+        function updateStatusPanel() {
+            const el = document.getElementById('itsStatus'); if (el) el.innerHTML = statusPanelInner();
+            const meta = document.getElementById('itsStatusMeta'); if (meta) meta.textContent = statusMetaText();
+        }
+        async function fetchStatus() {
+            try {
+                const res = await fetch('../api/it-team-space/get_status.php', { credentials: 'same-origin' });
+                const d = await res.json();
+                if (d.success) liveStatus = { state: 'ok', systems: d.systems || [], at: new Date().toLocaleTimeString() };
+                else if (d.configured === false) liveStatus = { state: 'unconfigured' };
+                else liveStatus = { state: 'error', error: d.error };
+            } catch (e) { liveStatus = { state: 'error', error: e.message }; }
+            updateStatusPanel();
+        }
 
         const projMeta = {
             'In progress': { c: '#7499FF' }, 'Planning': { c: '#97AAB3' },
@@ -300,10 +324,9 @@ $analyst_initials = strtoupper(substr($__parts[0] ?? 'A', 0, 1) . (isset($__part
                     <div style="font-size:13px;color:#9BA1A9;margin-top:4px;line-height:1.45">${esc(a.body)}</div>
                     <div style="display:flex;align-items:center;gap:7px;margin-top:9px"><div style="${av(a.c,20)}">${esc(a.initials)}</div><span style="font-size:12px;color:#7E848D">${esc(a.author)}</span></div>
                 </div>`).join('');
-                const sysHtml = sysRaw.map((x, i) => { const m = stMeta[x.s]; return `<div style="display:flex;align-items:center;gap:10px;padding:11px 14px;${i?'border-top:1px solid #23262C':''}"><span style="width:8px;height:8px;border-radius:50%;background:${m.c};flex:none;box-shadow:0 0 0 3px ${m.c}33"></span><span style="font-size:13.5px;font-weight:500;flex:1;color:#D6D9DE">${esc(x.name)}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;padding:2px 8px;border-radius:6px;background:${m.c}22;color:${m.c}">${esc(m.label)}</span></div>`; }).join('');
                 annStatus = `<div style="display:grid;grid-template-columns:1.4fr 1fr;gap:18px;margin-top:24px">
                     <div><div style="font-size:15px;font-weight:700;margin-bottom:12px;color:#F2F4F6">📣 Announcements</div><div style="display:flex;flex-direction:column;gap:10px">${annHtml}</div></div>
-                    <div><div style="font-size:15px;font-weight:700;margin-bottom:12px;color:#F2F4F6">🟢 System status</div><div style="background:#1B1E24;border:1px solid #2A2D34;border-radius:12px;overflow:hidden">${sysHtml}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6E747D;margin-top:8px;text-align:right">Auto-refreshed · 2 min ago</div></div>
+                    <div><div style="font-size:15px;font-weight:700;margin-bottom:12px;color:#F2F4F6">🟢 System status</div><div id="itsStatus" style="background:#1B1E24;border:1px solid #2A2D34;border-radius:12px;overflow:hidden">${statusPanelInner()}</div><div id="itsStatusMeta" style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#6E747D;margin-top:8px;text-align:right">${statusMetaText()}</div></div>
                 </div>`;
             }
 
@@ -423,6 +446,8 @@ $analyst_initials = strtoupper(substr($__parts[0] ?? 'A', 0, 1) . (isset($__part
         document.addEventListener('mouseout', (e) => { const h = e.target.closest('.its-hoverable'); if (h) h.style.filter = ''; });
 
         render();
+        fetchStatus();
+        setInterval(fetchStatus, 60000); // refresh live system status each minute
     })();
     </script>
 </body>

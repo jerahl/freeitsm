@@ -258,4 +258,108 @@ class ZabbixClient
             'severities'   => self::SEVERITIES,
         ];
     }
+
+    /**
+     * Build a service-status board from Zabbix host groups. Each monitored host
+     * group becomes one row whose status is derived from the worst active
+     * problem affecting hosts in that group (and host maintenance windows):
+     *
+     *   severity >= 4 (High/Disaster) → down
+     *   severity 2–3 (Warning/Average) → degraded
+     *   any host in maintenance        → maintenance
+     *   otherwise                      → operational
+     *
+     * Rows are sorted worst-first. Requires Zabbix 6.2+ (selectHostGroups).
+     *
+     * @return array<int,array{name:string,status:string,severity:int}>
+     */
+    public function getServiceStatus($limit = 40)
+    {
+        $groups = $this->call('hostgroup.get', [
+            'output'               => ['groupid', 'name'],
+            'with_monitored_hosts' => true,
+            'real_hosts'           => true,
+            'sortfield'            => 'name',
+        ]);
+        $groups = is_array($groups) ? $groups : [];
+
+        // host → groups + maintenance flag
+        $hosts = $this->call('host.get', [
+            'output'           => ['hostid', 'maintenance_status'],
+            'selectHostGroups' => ['groupid'],
+            'monitored_hosts'  => true,
+        ]);
+        $hosts = is_array($hosts) ? $hosts : [];
+        $hostGroups = [];
+        $hostMaint  = [];
+        foreach ($hosts as $h) {
+            $hid = $h['hostid'] ?? null;
+            if ($hid === null) continue;
+            $grps = $h['hostgroups'] ?? $h['groups'] ?? [];
+            $hostGroups[$hid] = array_map(function ($g) { return $g['groupid']; }, $grps);
+            $hostMaint[$hid]  = (int) ($h['maintenance_status'] ?? 0) === 1;
+        }
+
+        // active problems → trigger → hosts
+        $problems = $this->call('problem.get', [
+            'output' => ['eventid', 'objectid', 'severity'],
+            'recent' => false,
+        ]);
+        $problems = is_array($problems) ? $problems : [];
+        $triggerIds = array_values(array_unique(array_filter(array_map(
+            function ($p) { return $p['objectid'] ?? null; }, $problems))));
+        $triggerHosts = [];
+        if (!empty($triggerIds)) {
+            $triggers = $this->call('trigger.get', [
+                'output'      => ['triggerid'],
+                'selectHosts' => ['hostid'],
+                'triggerids'  => $triggerIds,
+            ]);
+            foreach (is_array($triggers) ? $triggers : [] as $tr) {
+                $triggerHosts[$tr['triggerid']] = array_map(function ($h) { return $h['hostid']; }, $tr['hosts'] ?? []);
+            }
+        }
+
+        // worst severity per group
+        $groupSev = [];
+        foreach ($problems as $p) {
+            $sev = (int) ($p['severity'] ?? 0);
+            $tid = $p['objectid'] ?? null;
+            foreach ($triggerHosts[$tid] ?? [] as $hid) {
+                foreach ($hostGroups[$hid] ?? [] as $gid) {
+                    if (!isset($groupSev[$gid]) || $sev > $groupSev[$gid]) {
+                        $groupSev[$gid] = $sev;
+                    }
+                }
+            }
+        }
+        // maintenance per group
+        $groupMaint = [];
+        foreach ($hostMaint as $hid => $inMaint) {
+            if (!$inMaint) continue;
+            foreach ($hostGroups[$hid] ?? [] as $gid) {
+                $groupMaint[$gid] = true;
+            }
+        }
+
+        $rank = ['down' => 3, 'degraded' => 2, 'maintenance' => 1, 'operational' => 0];
+        $rows = [];
+        foreach ($groups as $g) {
+            $gid = $g['groupid'];
+            $sev = $groupSev[$gid] ?? -1;
+            if ($sev >= 4)            $st = 'down';
+            elseif ($sev >= 2)        $st = 'degraded';
+            elseif (!empty($groupMaint[$gid])) $st = 'maintenance';
+            else                      $st = 'operational';
+            $rows[] = ['name' => $g['name'], 'status' => $st, 'severity' => max(0, $sev)];
+        }
+
+        // worst-first, then alphabetical
+        usort($rows, function ($a, $b) use ($rank) {
+            $d = $rank[$b['status']] - $rank[$a['status']];
+            return $d !== 0 ? $d : strcasecmp($a['name'], $b['name']);
+        });
+
+        return array_slice($rows, 0, $limit);
+    }
 }
