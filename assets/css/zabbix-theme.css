@@ -112,7 +112,10 @@ code, kbd, pre { background: var(--zbx-bg-2) !important; color: #93c5fd !importa
 p, li, dd, dt, label, caption, blockquote, figcaption, small, strong, em, b, th,
 .title, .name, .value, .text, .desc, .description, .meta, .subtitle,
 .field-label, .stat-label, .stat-value, .card-title, .item-title, .row-title,
-.section-title, .empty-state, .no-data {
+.section-title, .empty-state, .no-data,
+[class*="-name"], [class*="-title"], [class*="-value"], [class*="-email"],
+[class*="-detail"], [class*="-heading"], [class*="-desc"], [class*="-text"],
+[class*="-username"], [class*="-subtitle"], [class*="-meta"] {
     color: var(--zbx-text) !important;
 }
 
@@ -137,10 +140,22 @@ p, li, dd, dt, label, caption, blockquote, figcaption, small, strong, em, b, th,
     color: revert !important;
 }
 
-.section-header, [class*="card-header"], [class*="panel-header"], [class*="modal-header"] {
-    background: var(--zbx-panel-2) !important;
+/* Sub-headers (detail/list/section strips) — :not(.header) so the top
+   navigation bar keeps its near-black shade. */
+.section-header, [class*="-header"]:not(.header) {
+    background-color: var(--zbx-panel-2) !important;
     border-color: var(--zbx-border) !important;
     color: var(--zbx-text-strong) !important;
+}
+
+/* List/grid rows that modules render as light bars (.module-row, .ticket-row,
+   .ticket-row-header …) — read as panels on the dark surface. */
+[class*="-row"] { background-color: var(--zbx-panel) !important; border-color: var(--zbx-border-soft) !important; }
+[class*="-row"]:hover { background-color: var(--zbx-bg-2) !important; }
+
+/* Selected list items (the light-blue highlight) → themed accent tint. */
+[class*="-item"].selected, [class*="-item"].active, li.selected, tr.selected {
+    background-color: var(--zbx-accent-soft) !important;
 }
 
 /* ── Headings / text helpers ──────────────────────────────────────────── */
