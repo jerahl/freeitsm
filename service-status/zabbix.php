@@ -161,6 +161,7 @@ $refreshSeconds = defined('ZABBIX_REFRESH_SECONDS') ? (int) ZABBIX_REFRESH_SECON
         .zbx-state.error h2 { color: #E45959; }
         .zbx-empty-row td { text-align: center; color: #64748b; padding: 30px; }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php require_once 'includes/header.php'; ?>

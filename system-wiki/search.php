@@ -121,6 +121,7 @@ $translationNamespaces = ['common', 'system-wiki'];
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>

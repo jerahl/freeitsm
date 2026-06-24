@@ -30,6 +30,7 @@ $translationNamespaces = ['common', 'workflow'];
     <style>
         .container { height: calc(100vh - 48px); overflow-y: auto; max-width: none; }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>

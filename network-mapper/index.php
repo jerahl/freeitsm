@@ -226,6 +226,7 @@ $translationNamespaces = ['common', 'network-mapper'];
         }
         .nm-form-group small { color: #6b7280; font-size: 12px; display: block; margin-top: 4px; }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>

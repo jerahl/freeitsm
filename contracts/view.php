@@ -264,6 +264,7 @@ if (!$contract_id) {
         .checkbox-row input { width: auto; }
         .checkbox-row label { margin: 0; }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>

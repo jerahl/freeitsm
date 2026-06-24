@@ -221,6 +221,7 @@ $translationNamespaces = ['common', 'tickets'];
             }
         }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php require_once '../includes/header.php'; ?>

@@ -224,6 +224,7 @@ $translationNamespaces = ['common', 'knowledge'];
             color: #721c24;
         }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

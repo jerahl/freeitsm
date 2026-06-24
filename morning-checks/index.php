@@ -236,6 +236,7 @@ $translationNamespaces = ['common', 'morning-checks'];
         .mc-divider.dragging { background: rgba(0, 123, 255, 0.35); }
 
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>

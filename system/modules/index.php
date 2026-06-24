@@ -275,6 +275,7 @@ $translationNamespaces = ['common', 'system'];
         .toast.error { background: #d32f2f; }
         .toast.success { background: #2e7d32; }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

@@ -55,6 +55,7 @@ $translationNamespaces = ['common', 'workflow'];
             line-height: 1.55;
         }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

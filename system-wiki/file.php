@@ -183,6 +183,7 @@ $translationNamespaces = ['common', 'system-wiki'];
         .line-ref { color: #aaa; font-family: monospace; font-size: 12px; }
         .empty-section { padding: 16px 20px; color: #aaa; font-size: 13px; font-style: italic; }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>

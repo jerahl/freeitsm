@@ -412,6 +412,7 @@ $translationNamespaces = ['common', 'forms'];
             .fm-help-tips-grid { grid-template-columns: 1fr; }
         }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>

@@ -262,6 +262,7 @@ if (!isset($_SESSION['analyst_id'])) {
             color: #999;
         }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

@@ -78,6 +78,7 @@ $translationNamespaces = ['common', 'system'];
         .rt-step.skipped, .rt-step.not_evaluated { opacity: 0.7; }
         .rt-step strong { color: #444; font-weight: 600; }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

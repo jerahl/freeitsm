@@ -75,6 +75,7 @@ $translationNamespaces = ['common', 'contracts'];
         }
         .rfp-ai-ssl-warning strong { color: #b71c1c; }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

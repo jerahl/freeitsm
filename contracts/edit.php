@@ -176,6 +176,7 @@ $contract_id = $_GET['id'] ?? null;
         .terms-empty { color: #999; font-size: 13px; padding: 12px 0; }
         .terms-empty a { color: #f59e0b; }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>

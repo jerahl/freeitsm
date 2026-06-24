@@ -437,6 +437,7 @@ $translationNamespaces = ['common', 'contracts'];
         .merge-summary ul { margin: 6px 0 0 18px; padding: 0; }
         .merge-summary li { margin-bottom: 3px; }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

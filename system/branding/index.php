@@ -223,6 +223,7 @@ $translationNamespaces = ['common', 'system'];
         .btn-link:hover { text-decoration: underline; }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

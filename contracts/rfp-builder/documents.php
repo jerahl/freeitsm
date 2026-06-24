@@ -168,6 +168,7 @@ $translationNamespaces = ['common', 'contracts'];
         }
         .alert-info a { color: #b45309; font-weight: 600; }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

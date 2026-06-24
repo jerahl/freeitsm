@@ -243,6 +243,7 @@ $translationNamespaces = ['common', 'forms'];
         .ai-form .btn-test:hover { background: #f5f5f5; border-color: #00897b; color: #00897b; }
         .ai-form .test-status { font-size: 13px; margin-left: 8px; }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

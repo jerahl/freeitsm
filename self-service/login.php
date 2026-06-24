@@ -151,6 +151,7 @@ $translationNamespaces = ['common', 'self-service'];
         }
         .mfa-back a:hover { text-decoration: underline; }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <div class="login-container">

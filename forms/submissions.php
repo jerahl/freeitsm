@@ -337,6 +337,7 @@ $translationNamespaces = ['common', 'forms'];
             .subs-table td { max-width: none; white-space: normal; }
         }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include 'includes/header.php'; ?>

@@ -192,6 +192,7 @@ $translationNamespaces = ['common', 'cmdb'];
         .ai-suggestion .sug-why { color: #4b5563; font-size: 13px; line-height: 1.4; margin-top: 4px; }
         .ai-suggestion .sug-meta { color: #6b7280; font-size: 12px; margin-top: 4px; }
     </style>
+    <link rel="stylesheet" href="../../assets/css/zabbix-theme.css">
 </head>
 <body>
     <?php include '../includes/header.php'; ?>

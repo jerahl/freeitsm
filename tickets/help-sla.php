@@ -306,6 +306,7 @@ $translationNamespaces = ['common', 'tickets'];
             .tk-help-hero { padding: 30px 24px; }
         }
     </style>
+    <link rel="stylesheet" href="../assets/css/zabbix-theme.css">
 </head>
 <body>
 <?php include 'includes/header.php'; ?>
