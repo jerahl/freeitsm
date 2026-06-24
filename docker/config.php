@@ -24,6 +24,13 @@ define('SSL_VERIFY_PEER', false);
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
 
+// Zabbix integration (Service Status > Zabbix). Configured via environment
+// variables in docker-compose.yml — leave ZABBIX_API_URL empty to disable.
+define('ZABBIX_API_URL',         getenv('ZABBIX_API_URL')   ?: '');
+define('ZABBIX_API_TOKEN',       getenv('ZABBIX_API_TOKEN') ?: '');
+define('ZABBIX_REFRESH_SECONDS', (int) (getenv('ZABBIX_REFRESH_SECONDS') ?: 30));
+define('ZABBIX_MIN_SEVERITY',    (int) (getenv('ZABBIX_MIN_SEVERITY') ?: 0));
+
 /**
  * BASE_URL — absolute URL path prefix for the app's deployment root.
  * Auto-detected from the filesystem location of this config.php relative to

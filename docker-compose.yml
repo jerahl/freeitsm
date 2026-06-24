@@ -12,6 +12,12 @@ services:
       - DB_USERNAME=freeitsm
       - DB_PASSWORD=freeitsm
       - ENCRYPTION_KEY_PATH=/var/www/encryption_keys/freeitsm.key
+      # Zabbix integration (Service Status > Zabbix). Leave ZABBIX_API_URL
+      # empty/unset to disable. Requires Zabbix 6.0+ (Bearer API token).
+      - ZABBIX_API_URL=${ZABBIX_API_URL:-}
+      - ZABBIX_API_TOKEN=${ZABBIX_API_TOKEN:-}
+      - ZABBIX_REFRESH_SECONDS=${ZABBIX_REFRESH_SECONDS:-30}
+      - ZABBIX_MIN_SEVERITY=${ZABBIX_MIN_SEVERITY:-0}
     volumes:
       - attachments:/var/www/html/tickets/attachments
       - cm-attachments:/var/www/html/change-management/attachments
